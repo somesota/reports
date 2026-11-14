@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" width="960" height="560"
+     role="img" aria-label="The stub's in-process PE mapper: eight steps from signature check to entry-point call"
+     font-family="Inter, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="s" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#3a4590"/>
+    </marker>
+    <marker id="d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8a5a00"/>
+    </marker>
+    <style>
+      .fn   { font-size: 11.5px; font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fill: #1c1e24; }
+      .addr { font-size: 11px;   font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fill: #767d8a; }
+      .lbl  { font-size: 13px;   fill: #1c1e24; }
+      .sub  { font-size: 12px;   fill: #4a5060; }
+      .hdr  { font-size: 12px;   font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; fill: #18225c; letter-spacing: 1.2px; }
+      .box  { fill: #ffffff; stroke: #18225c; stroke-width: 1.5; }
+      .boxI { fill: #fdf6e6; stroke: #8a5a00; stroke-width: 1.5; stroke-dasharray: 5 4; }
+      .boxG { fill: #eef7f2; stroke: #1f6b46; stroke-width: 1.5; }
+      .num  { font-size: 11px; font-family: 'JetBrains Mono', Menlo, Consolas, monospace; fill: #3a4590; }
+    </style>
+  </defs>
+
+  <rect width="960" height="560" fill="#ffffff"/>
+
+  <rect x="0" y="14" width="960" height="26" fill="#eef0f7"/>
+  <text x="16" y="32" class="hdr">manual_map_pe_and_run — 0x140076710 — NOTHING ON DISK, NO LdrLoadDll</text>
+
+  <rect x="20" y="58" width="212" height="102" rx="3" class="box"/>
+  <text x="30" y="76" class="num">1</text>
+  <text x="126" y="92" text-anchor="middle" class="lbl">check MZ / PE</text>
+  <text x="126" y="114" text-anchor="middle" class="sub">validate both signatures</text>
+  <text x="126" y="131" text-anchor="middle" class="sub">on the decrypted buffer</text>
+
+  <line x1="234" y1="109" x2="256" y2="109" stroke="#3a4590" stroke-width="1.5" marker-end="url(#s)"/>
+
+  <rect x="260" y="58" width="212" height="102" rx="3" class="box"/>
+  <text x="270" y="76" class="num">2</text>
+  <text x="366" y="92" text-anchor="middle" class="lbl">allocate the image</text>
+  <text x="366" y="114" text-anchor="middle" class="sub">SizeOfImage at the preferred</text>
+  <text x="366" y="131" text-anchor="middle" class="sub">base, any base as fallback</text>
+
+  <line x1="474" y1="109" x2="496" y2="109" stroke="#3a4590" stroke-width="1.5" marker-end="url(#s)"/>
+
+  <rect x="500" y="58" width="212" height="102" rx="3" class="box"/>
+  <text x="510" y="76" class="num">3</text>
+  <text x="606" y="92" text-anchor="middle" class="lbl">copy the sections</text>
+  <text x="606" y="114" text-anchor="middle" class="sub">headers first, then each to its</text>
+  <text x="606" y="131" text-anchor="middle" class="sub">virtual offset, zero-padded</text>
+
+  <line x1="714" y1="109" x2="736" y2="109" stroke="#3a4590" stroke-width="1.5" marker-end="url(#s)"/>
+
+  <rect x="740" y="58" width="212" height="102" rx="3" class="box"/>
+  <text x="750" y="76" class="num">4</text>
+  <text x="846" y="92" text-anchor="middle" class="lbl">relocate</text>
+  <text x="846" y="114" text-anchor="middle" class="sub">IMAGE_REL_BASED_DIR64</text>
+  <text x="846" y="131" text-anchor="middle" class="sub">only, for the base delta</text>
+
+  <polyline points="846,162 846,186 126,186 126,214" fill="none" stroke="#3a4590" stroke-width="1.5" marker-end="url(#s)"/>
+
+  <rect x="20" y="218" width="212" height="102" rx="3" class="box"/>
+  <text x="30" y="236" class="num">5</text>
+  <text x="126" y="252" text-anchor="middle" class="lbl">resolve imports</text>
+  <text x="126" y="274" text-anchor="middle" class="sub">by name and by ordinal, via</text>
+  <text x="126" y="291" text-anchor="middle" class="sub">hash-resolved LoadLibrary</text>
+  <text x="126" y="309" text-anchor="middle" class="sub">and GetProcAddress</text>
+
+  <line x1="234" y1="269" x2="256" y2="269" stroke="#3a4590" stroke-width="1.5" marker-end="url(#s)"/>
+
+  <rect x="260" y="218" width="212" height="102" rx="3" class="box"/>
+  <text x="270" y="236" class="num">6</text>
+  <text x="366" y="252" text-anchor="middle" class="lbl">set protections</text>
+  <text x="366" y="274" text-anchor="middle" class="sub">per section, taken from that</text>
+  <text x="366" y="291" text-anchor="middle" class="sub">section&#8217;s characteristics</text>
+
+  <line x1="474" y1="269" x2="496" y2="269" stroke="#8a5a00" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#d)"/>
+
+  <rect x="500" y="218" width="212" height="102" rx="3" class="boxI"/>
+  <text x="510" y="236" class="num">7</text>
+  <text x="606" y="252" text-anchor="middle" class="lbl">LOAD_CONFIG setup</text>
+  <text x="606" y="274" text-anchor="middle" class="sub">fill the fields, register the</text>
+  <text x="606" y="291" text-anchor="middle" class="sub">exception table</text>
+  <text x="606" y="309" text-anchor="middle" class="addr">0x1400764d0</text>
+
+  <line x1="714" y1="269" x2="736" y2="269" stroke="#8a5a00" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#d)"/>
+
+  <rect x="740" y="218" width="212" height="102" rx="3" class="box"/>
+  <text x="750" y="236" class="num">8</text>
+  <text x="846" y="252" text-anchor="middle" class="lbl">run it</text>
+  <text x="846" y="274" text-anchor="middle" class="sub">TLS callbacks, then</text>
+  <text x="846" y="291" text-anchor="middle" class="sub">AddressOfEntryPoint</text>
+
+  <line x1="846" y1="322" x2="846" y2="348" stroke="#3a4590" stroke-width="1.5"/>
+  <polyline points="846,348 480,348 480,376" fill="none" stroke="#3a4590" stroke-width="1.5" marker-end="url(#s)"/>
+
+  <rect x="240" y="380" width="480" height="66" rx="3" class="boxG"/>
+  <text x="480" y="404" text-anchor="middle" class="lbl">the Vidar payload is now running in the crypter&#8217;s own process</text>
+  <text x="480" y="426" text-anchor="middle" class="sub">no child process, no module load, nothing written to disk</text>
+
+  <rect x="20" y="470" width="920" height="72" rx="3" fill="#fdf6e6" stroke="#8a5a00" stroke-width="1" stroke-dasharray="5 4"/>
+  <text x="480" y="494" text-anchor="middle" class="sub">Dashed: step 7 is the one part of the mapper whose API identities were never resolved.</text>
+  <text x="480" y="514" text-anchor="middle" class="sub">Four of its hash constants — 0x119d835c, 0xde3b8209, 0xecffbc12, 0xe0e67cea — were never matched</text>
+  <text x="480" y="534" text-anchor="middle" class="sub">to a named API; their roles are inferred from call shape. Every other step here is read from code.</text>
+</svg>

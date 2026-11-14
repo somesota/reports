@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 580" width="960" height="580"
+     role="img" aria-label="Execution path from entry point to payload: API resolution, two environment gates, then decrypt and run"
+     font-family="Inter, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="s" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#3a4590"/>
+    </marker>
+    <marker id="d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8a5a00"/>
+    </marker>
+    <style>
+      .fn   { font-size: 12px;   font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fill: #1c1e24; }
+      .addr { font-size: 11px;   font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fill: #767d8a; }
+      .lbl  { font-size: 13px;   fill: #1c1e24; }
+      .sub  { font-size: 12px;   fill: #4a5060; }
+      .hdr  { font-size: 12px;   font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; fill: #18225c; letter-spacing: 1.2px; }
+      .hdrW { font-size: 12px;   font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; fill: #8a5a00; letter-spacing: 1.2px; }
+      .box  { fill: #ffffff; stroke: #18225c; stroke-width: 1.5; }
+      .boxI { fill: #fdf6e6; stroke: #8a5a00; stroke-width: 1.5; stroke-dasharray: 5 4; }
+      .num  { font-size: 11px; font-family: 'JetBrains Mono', Menlo, Consolas, monospace; fill: #3a4590; }
+    </style>
+  </defs>
+
+  <rect width="960" height="580" fill="#ffffff"/>
+
+  <!-- band A: API resolution -->
+  <rect x="0" y="14" width="960" height="26" fill="#eef0f7"/>
+  <text x="16" y="32" class="hdr">1 — RESOLVE APIS WITHOUT AN IMPORT TABLE</text>
+
+  <rect x="20" y="54" width="280" height="70" rx="3" class="box"/>
+  <text x="160" y="78" text-anchor="middle" class="lbl">walk TEB &#8594; PEB &#8594; Ldr, take kernel32</text>
+  <text x="160" y="97" text-anchor="middle" class="fn">peb_walk_get_kernel32</text>
+  <text x="160" y="114" text-anchor="middle" class="addr">0x140075fb0</text>
+
+  <line x1="302" y1="89" x2="336" y2="89" stroke="#3a4590" stroke-width="1.5" marker-end="url(#s)"/>
+
+  <rect x="340" y="54" width="280" height="70" rx="3" class="box"/>
+  <text x="480" y="78" text-anchor="middle" class="lbl">parse the export directory by hand</text>
+  <text x="480" y="97" text-anchor="middle" class="fn">resolve_api_by_hash</text>
+  <text x="480" y="114" text-anchor="middle" class="addr">0x140076050</text>
+
+  <line x1="622" y1="89" x2="656" y2="89" stroke="#3a4590" stroke-width="1.5" marker-end="url(#s)"/>
+
+  <rect x="660" y="54" width="280" height="70" rx="3" class="box"/>
+  <text x="800" y="78" text-anchor="middle" class="lbl">XXHash32 seed 0 over each name</text>
+  <text x="800" y="97" text-anchor="middle" class="fn">xxhash32_name_hash</text>
+  <text x="800" y="114" text-anchor="middle" class="addr">0x140076100</text>
+
+  <!-- band B: gates -->
+  <rect x="0" y="148" width="960" height="26" fill="#eef0f7"/>
+  <text x="16" y="166" class="hdr">2 — TWO GATES, BOTH ABORTING SILENTLY</text>
+
+  <rect x="20" y="188" width="440" height="96" rx="3" class="box"/>
+  <text x="240" y="212" text-anchor="middle" class="lbl">region gate</text>
+  <text x="240" y="232" text-anchor="middle" class="sub">abort if keyboard LANGID is 0x419 or 0x423</text>
+  <text x="240" y="252" text-anchor="middle" class="fn">locale_cis_check</text>
+  <text x="240" y="270" text-anchor="middle" class="addr">0x140076310</text>
+
+  <rect x="500" y="188" width="440" height="96" rx="3" class="box"/>
+  <text x="720" y="212" text-anchor="middle" class="lbl">timing gate</text>
+  <text x="720" y="232" text-anchor="middle" class="sub">spin to ~1000 ms; abort if off by more than 50 ms</text>
+  <text x="720" y="252" text-anchor="middle" class="fn">tick_count_timing_check</text>
+  <text x="720" y="270" text-anchor="middle" class="addr">0x140076cf0</text>
+
+  <rect x="20" y="298" width="440" height="48" rx="3" class="boxI"/>
+  <text x="240" y="317" text-anchor="middle" class="sub">plus four hashed locale strings, compared blind</text>
+  <text x="240" y="335" text-anchor="middle" class="sub">the plaintext behind those four was never recovered</text>
+  <line x1="240" y1="284" x2="240" y2="296" stroke="#8a5a00" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#d)"/>
+
+  <!-- band C: decrypt and run -->
+  <rect x="0" y="356" width="960" height="26" fill="#eef0f7"/>
+  <text x="16" y="374" class="hdrW">3 — DECRYPT AND RUN, ALL INSIDE THIS ONE PROCESS</text>
+
+  <rect x="20" y="396" width="280" height="66" rx="3" class="box"/>
+  <text x="160" y="420" text-anchor="middle" class="lbl">VirtualAlloc 0x11a800, RW</text>
+  <text x="160" y="440" text-anchor="middle" class="fn">alloc_decrypt_execute_stage2</text>
+  <text x="160" y="456" text-anchor="middle" class="addr">0x140076410</text>
+
+  <line x1="302" y1="429" x2="336" y2="429" stroke="#3a4590" stroke-width="1.5" marker-end="url(#s)"/>
+
+  <rect x="340" y="396" width="280" height="66" rx="3" class="box"/>
+  <text x="480" y="420" text-anchor="middle" class="lbl">copy 1,157,120 ciphertext bytes in</text>
+  <text x="480" y="440" text-anchor="middle" class="fn">memcpy helper</text>
+  <text x="480" y="456" text-anchor="middle" class="addr">0x140075f60</text>
+
+  <line x1="622" y1="429" x2="656" y2="429" stroke="#3a4590" stroke-width="1.5" marker-end="url(#s)"/>
+
+  <rect x="660" y="396" width="280" height="66" rx="3" class="box"/>
+  <text x="800" y="420" text-anchor="middle" class="lbl">decrypt in place</text>
+  <text x="800" y="440" text-anchor="middle" class="fn">stream_cipher_decrypt_stage2</text>
+  <text x="800" y="456" text-anchor="middle" class="addr">0x140073be0</text>
+
+  <polyline points="800,464 800,484 240,484 240,502" fill="none" stroke="#3a4590" stroke-width="1.5" marker-end="url(#s)"/>
+
+  <rect x="20" y="506" width="440" height="60" rx="3" class="box"/>
+  <text x="240" y="528" text-anchor="middle" class="lbl">manual-map the plaintext PE, call its entry point</text>
+  <text x="240" y="547" text-anchor="middle" class="fn">manual_map_pe_and_run</text>
+  <text x="240" y="562" text-anchor="middle" class="addr">0x140076710</text>
+
+  <line x1="462" y1="536" x2="496" y2="536" stroke="#3a4590" stroke-width="1.5" marker-end="url(#s)"/>
+
+  <rect x="500" y="506" width="440" height="60" rx="3" class="box"/>
+  <text x="720" y="528" text-anchor="middle" class="lbl">payload returns, then VirtualFree the buffer</text>
+  <text x="720" y="547" text-anchor="middle" class="fn">hash 0xc9223d4c &#8212; (ptr, 0, MEM_RELEASE)</text>
+  <text x="720" y="562" text-anchor="middle" class="addr">0x140076410 tail</text>
+</svg>

@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 660" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="13">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#475569"/>
+    </marker>
+    <pattern id="decoy-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="6" stroke="#d97706" stroke-width="0.8" stroke-opacity="0.25"/>
+    </pattern>
+  </defs>
+  <rect width="720" height="660" fill="#ffffff" rx="4"/>
+  <!-- Title -->
+  <text x="360" y="30" text-anchor="middle" font-size="16" font-weight="600" fill="#0f172a">GoWordCount Packer — Execution Sequence</text>
+  <text x="360" y="48" text-anchor="middle" font-size="11" fill="#64748b">From GCleaner drop to in-memory payload hand-off</text>
+  <!-- Participant boxes -->
+  <rect x="30" y="65" width="130" height="32" rx="4" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="95" y="85" text-anchor="middle" font-size="11" font-weight="600" fill="#1e40af">GCleaner Update</text>
+  <rect x="220" y="65" width="130" height="32" rx="4" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="285" y="85" text-anchor="middle" font-size="11" font-weight="600" fill="#3730a3">GoWordCount</text>
+  <rect x="410" y="65" width="130" height="32" rx="4" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="475" y="85" text-anchor="middle" font-size="11" font-weight="600" fill="#475569">LazyDLL/LazyProc</text>
+  <rect x="570" y="65" width="100" height="32" rx="4" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="620" y="85" text-anchor="middle" font-size="11" font-weight="600" fill="#475569">KERNEL32</text>
+  <!-- Lifelines -->
+  <line x1="95" y1="97" x2="95" y2="640" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4,4"/>
+  <line x1="285" y1="97" x2="285" y2="640" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4,4"/>
+  <line x1="475" y1="97" x2="475" y2="640" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4,4"/>
+  <line x1="620" y1="97" x2="620" y2="640" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4,4"/>
+  <!-- Activation box -->
+  <rect x="280" y="130" width="10" height="500" rx="2" fill="#e0e7ff" stroke="#6366f1" stroke-width="1"/>
+  <!-- Step 1: Drop -->
+  <line x1="95" y1="140" x2="278" y2="140" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="187" y="133" text-anchor="middle" font-size="11" fill="#334155">fetch-and-execute export</text>
+  <rect x="130" y="146" width="120" height="18" rx="3" fill="#fef9c3" stroke="#ca8a04" stroke-width="0.8"/>
+  <text x="190" y="159" text-anchor="middle" font-size="10" fill="#854d0e">PE dropped to disk</text>
+  <!-- Step 2: Go runtime -->
+  <rect x="220" y="180" width="130" height="22" rx="3" fill="#f0fdf4" stroke="#22c55e" stroke-width="0.8"/>
+  <text x="285" y="195" text-anchor="middle" font-size="10" fill="#166534">Go runtime init (GUI subsys)</text>
+  <rect x="220" y="212" width="130" height="22" rx="3" fill="#f0fdf4" stroke="#22c55e" stroke-width="0.8"/>
+  <text x="285" y="227" text-anchor="middle" font-size="10" fill="#166534">main.main entry (~113 KB)</text>
+  <!-- Step 3: API resolution -->
+  <line x1="290" y1="255" x2="473" y2="255" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="382" y="248" text-anchor="middle" font-size="11" fill="#334155">table-driven resolution loop</text>
+  <line x1="475" y1="275" x2="618" y2="275" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="547" y="268" text-anchor="middle" font-size="11" fill="#334155">LoadLibrary / GetProcAddress</text>
+  <line x1="618" y1="290" x2="477" y2="290" stroke="#475569" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
+  <text x="547" y="305" text-anchor="middle" font-size="10" fill="#64748b">→ VirtualAlloc, etc. resolved</text>
+  <!-- Step 4: Blob copy -->
+  <rect x="168" y="330" width="234" height="40" rx="3" fill="#f8fafc" stroke="#94a3b8" stroke-width="0.8"/>
+  <text x="285" y="347" text-anchor="middle" font-size="11" font-weight="500" fill="#334155">Blob copy: .rdata → stack buffer</text>
+  <text x="285" y="363" text-anchor="middle" font-size="10" fill="#64748b">REP MOVSQ · key loaded into EDI</text>
+  <!-- Step 5: Camouflage zone — outer decoy wrapper around decode passes -->
+  <rect x="140" y="382" width="290" height="140" rx="4" fill="url(#decoy-hatch)" stroke="#d97706" stroke-width="1.2" stroke-dasharray="6,3"/>
+  <text x="145" y="396" font-size="9" font-weight="600" fill="#92400e">CAMOUFLAGE ZONE — 11× word-counter decoy repetitions</text>
+  <!-- Decoy block before -->
+  <rect x="152" y="402" width="120" height="28" rx="3" fill="#fefce8" stroke="#d97706" stroke-width="0.8"/>
+  <text x="212" y="415" text-anchor="middle" font-size="9" fill="#92400e">decoy rep. 1..N</text>
+  <text x="212" y="425" text-anchor="middle" font-size="8" fill="#a16207">map/sort/print cycle</text>
+  <!-- Real decode passes nested inside -->
+  <rect x="152" y="436" width="266" height="44" rx="3" fill="#faf5ff" stroke="#a855f7" stroke-width="1.2"/>
+  <text x="285" y="451" text-anchor="middle" font-size="11" font-weight="600" fill="#7e22ce">Six-pass keyed byte transform</text>
+  <text x="285" y="465" text-anchor="middle" font-size="9" fill="#7e22ce">1 even-sub · 2 odd-XOR · 3 reverse · 4 pair-swap · 5 sub · 6 XOR</text>
+  <!-- Decoy block after -->
+  <rect x="152" y="486" width="120" height="28" rx="3" fill="#fefce8" stroke="#d97706" stroke-width="0.8"/>
+  <text x="212" y="499" text-anchor="middle" font-size="9" fill="#92400e">decoy rep. N+1..11</text>
+  <text x="212" y="509" text-anchor="middle" font-size="8" fill="#a16207">map/sort/print cycle</text>
+  <!-- Entropy annotation -->
+  <rect x="450" y="440" width="180" height="34" rx="3" fill="#fff7ed" stroke="#f97316" stroke-width="0.8"/>
+  <text x="540" y="455" text-anchor="middle" font-size="10" fill="#9a3412">entropy: 7.997 → 6.72 bits/byte</text>
+  <text x="540" y="468" text-anchor="middle" font-size="10" fill="#9a3412">first bytes: MZ / PE</text>
+  <line x1="418" y1="458" x2="448" y2="458" stroke="#f97316" stroke-width="1" stroke-dasharray="3,2"/>
+  <!-- Decoy sentence annotation -->
+  <rect x="450" y="486" width="220" height="28" rx="3" fill="#fefce8" stroke="#d97706" stroke-width="0.8"/>
+  <text x="560" y="499" text-anchor="middle" font-size="9" fill="#92400e">"go code counts words and go code</text>
+  <text x="560" y="509" text-anchor="middle" font-size="9" fill="#92400e">logs every word" — 48 bytes, harmless</text>
+  <line x1="272" y1="500" x2="448" y2="500" stroke="#d97706" stroke-width="0.8" stroke-dasharray="3,2"/>
+  <!-- Step 6: VirtualAlloc -->
+  <line x1="290" y1="540" x2="618" y2="540" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="454" y="533" text-anchor="middle" font-size="11" fill="#334155">VirtualAlloc(RWX, MEM_COMMIT|MEM_RESERVE)</text>
+  <line x1="618" y1="555" x2="292" y2="555" stroke="#475569" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
+  <text x="454" y="570" text-anchor="middle" font-size="10" fill="#64748b">← executable memory region</text>
+  <!-- Step 7: Manual mapping -->
+  <rect x="168" y="585" width="234" height="30" rx="3" fill="#f8fafc" stroke="#94a3b8" stroke-width="0.8"/>
+  <text x="285" y="605" text-anchor="middle" font-size="11" font-weight="500" fill="#334155">Manual PE mapping (in-process)</text>
+  <rect x="430" y="590" width="180" height="20" rx="3" fill="#fef2f2" stroke="#ef4444" stroke-width="0.8"/>
+  <text x="520" y="604" text-anchor="middle" font-size="10" font-weight="500" fill="#991b1b">⚠ payload never touches disk</text>
+  <line x1="402" y1="600" x2="428" y2="600" stroke="#ef4444" stroke-width="1" stroke-dasharray="3,2"/>
+</svg>

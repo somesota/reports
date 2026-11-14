@@ -1,0 +1,152 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 820" width="1440" height="820" font-family="'Inter',-apple-system,'Segoe UI',Helvetica,Arial,sans-serif">
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0.5 1 L9 5 L0.5 9" fill="none" stroke="#1c1e24" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path>
+    </marker>
+    <marker id="ah-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0.5 1 L9 5 L0.5 9" fill="none" stroke="#8a5a00" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path>
+    </marker>
+    <g id="wob-tick"><path d="M0 4.5 L3.4 8 L9 0.6" fill="none" stroke="#1f6b46" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></g>
+  </defs>
+
+  <rect width="1440" height="820" fill="#ffffff"></rect>
+
+  <!-- header -->
+  <g>
+    <text x="56" y="55" font-family="'JetBrains Mono',ui-monospace,monospace" font-size="14.5" letter-spacing="1.6" fill="#767d8a">MALWARE SHEET · SAMPLE 5541bf99…8630c · BUILT 2026-08-18 · crypter, no C2, no persistence</text>
+
+    <g transform="translate(1046 34) rotate(-1.6)">
+      <rect x="2" y="3" width="340" height="94" rx="8" fill="none" stroke="#1f6b46" stroke-width="1.2" opacity=".3"></rect>
+      <rect width="340" height="94" rx="8" fill="#eef7f2" stroke="#1f6b46" stroke-width="1.8"></rect>
+      <text x="20" y="30" font-family="'JetBrains Mono',ui-monospace,monospace" font-size="12.5" letter-spacing="1.8" fill="#1f6b46">REPRODUCED, NOT JUST READ</text>
+      <text x="20" y="56" font-size="17" font-weight="600" fill="#1c1e24">Cipher run under emulation</text>
+      <text x="20" y="79" font-size="14.5" fill="#4a4f5a">byte-identical payload, twice</text>
+      <g transform="translate(300 44)"><use href="#wob-tick" transform="scale(2.2)"></use></g>
+    </g>
+  </g>
+
+  <!-- zone 1: arrival -->
+  <g transform="translate(56 168)">
+    <text font-family="'JetBrains Mono',ui-monospace,monospace" font-size="12.5" letter-spacing="2" fill="#767d8a">1 · HOW IT ARRIVES</text>
+
+    <g transform="translate(0 22) rotate(-0.5)">
+      <rect x="2" y="3" width="286" height="58" rx="7" fill="none" stroke="#b3b8c6" stroke-width="1.1" opacity=".45"></rect>
+      <rect width="286" height="58" rx="7" fill="#ffffff" stroke="#1c1e24" stroke-width="1.7"></rect>
+      <text x="18" y="25" font-size="15.5" font-weight="600" fill="#1c1e24">GCleaner bot</text>
+      <text x="18" y="45" font-size="13.5" fill="#4a4f5a">32-bit DLL, fetches this as an "update"</text>
+    </g>
+    <path d="M143 84 C 140 100, 146 106, 143 120" fill="none" stroke="#1c1e24" stroke-width="1.7" stroke-linecap="round" marker-end="url(#ah)"></path>
+
+    <g transform="translate(0 124) rotate(0.5)">
+      <rect x="2" y="3" width="286" height="170" rx="7" fill="none" stroke="#b3b8c6" stroke-width="1.1" opacity=".45"></rect>
+      <rect width="286" height="170" rx="7" fill="#faf9f7" stroke="#1c1e24" stroke-width="2.2"></rect>
+      <text x="18" y="27" font-size="16" font-weight="650" fill="#1c1e24">This file — the crypter</text>
+      <text x="18" y="50" font-size="13.5" fill="#4a4f5a">PE32+ x86-64 · 1,896,960 bytes</text>
+      <text x="18" y="70" font-size="13.5" fill="#4a4f5a">8 sections · no overlay · unsigned</text>
+      <text x="18" y="92" font-size="13.5" fill="#4a4f5a">One job: decrypt, map, run — nothing else</text>
+      <g transform="translate(18 106)">
+        <rect width="250" height="46" rx="5" fill="#fdf6e6" stroke="#d8b96a" stroke-width="1.3"></rect>
+        <text x="12" y="19" font-size="12" fill="#8a5a00">decoy identity: "Lubowitz - Strosin"</text>
+        <text x="12" y="37" font-size="12" fill="#8a5a00">"indexer_client.exe" — fabricated</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- zone 2: gates -->
+  <g transform="translate(400 168)">
+    <text font-family="'JetBrains Mono',ui-monospace,monospace" font-size="12.5" letter-spacing="2" fill="#767d8a">2 · TWO GATES, BOTH ABORT SILENTLY</text>
+    <text x="0" y="20" font-size="13.5" fill="#767d8a">no exception, no error — a failed run looks like nothing at all</text>
+
+    <g transform="translate(0 40) rotate(-0.4)">
+      <rect x="2" y="3" width="342" height="88" rx="7" fill="none" stroke="#b3b8c6" stroke-width="1.1" opacity=".45"></rect>
+      <rect width="342" height="88" rx="7" fill="#ffffff" stroke="#1c1e24" stroke-width="1.7"></rect>
+      <text x="18" y="26" font-size="15.5" font-weight="600" fill="#1c1e24">Locale gate</text>
+      <text x="18" y="47" font-size="13" fill="#4a4f5a">LANGID 0x419 (RU) / 0x423 (BY) → abort</text>
+      <g transform="translate(18 56)">
+        <rect width="306" height="24" rx="4" fill="#fdf6e6" stroke="#d8b96a" stroke-width="1.2"></rect>
+        <text x="10" y="17" font-size="11.5" fill="#8a5a00">+ 4 hashed locale strings — plaintext unresolved</text>
+      </g>
+    </g>
+    <path d="M171 132 C 168 148, 174 154, 171 168" fill="none" stroke="#1c1e24" stroke-width="1.7" stroke-linecap="round" marker-end="url(#ah)"></path>
+
+    <g transform="translate(0 172) rotate(0.4)">
+      <rect x="2" y="3" width="342" height="70" rx="7" fill="none" stroke="#b3b8c6" stroke-width="1.1" opacity=".45"></rect>
+      <rect width="342" height="70" rx="7" fill="#ffffff" stroke="#1c1e24" stroke-width="1.7"></rect>
+      <text x="18" y="26" font-size="15.5" font-weight="600" fill="#1c1e24">Timing gate</text>
+      <text x="18" y="47" font-size="13" fill="#4a4f5a">~1000 ms spin, abort past ±50 ms deviation</text>
+    </g>
+    <path d="M171 246 C 168 262, 174 268, 171 282" fill="none" stroke="#1c1e24" stroke-width="1.7" stroke-linecap="round" marker-end="url(#ah)"></path>
+
+    <g transform="translate(30 286)">
+      <rect width="282" height="36" rx="6" fill="#eef7f2" stroke="#1f6b46" stroke-width="1.4"></rect>
+      <text x="14" y="23" font-size="13" fill="#1f6b46">both pass → decrypt-and-run, no dispatcher needed</text>
+    </g>
+  </g>
+
+  <!-- zone 3: resolve + decrypt -->
+  <g transform="translate(800 168)">
+    <text font-family="'JetBrains Mono',ui-monospace,monospace" font-size="12.5" letter-spacing="2" fill="#767d8a">3 · RESOLVE, THEN DECRYPT</text>
+    <text x="0" y="20" font-size="13.5" fill="#767d8a">no import table — every API found at runtime</text>
+
+    <g transform="translate(0 38) rotate(0.3)">
+      <rect x="3" y="4" width="472" height="360" rx="8" fill="none" stroke="#b3b8c6" stroke-width="1.1" opacity=".45"></rect>
+      <rect width="472" height="360" rx="8" fill="#ffffff" stroke="#1c1e24" stroke-width="1.8"></rect>
+
+      <text x="18" y="28" font-family="'JetBrains Mono',ui-monospace,monospace" font-size="12.5" fill="#3a4590">PEB walk → kernel32 → XXHash32(name, seed 0)</text>
+
+      <g transform="translate(16 42)">
+        <rect width="440" height="60" rx="6" fill="#f5f6f9" stroke="#18225c" stroke-width="2"></rect>
+        <text x="14" y="21" font-family="'JetBrains Mono',ui-monospace,monospace" font-size="11.5" letter-spacing="1.6" fill="#18225c">MASTER KEY · 128 BYTES @ 0x14007b000</text>
+        <text x="14" y="42" font-size="13" fill="#1c1e24">published in full — per-build, deliberately in no rule</text>
+      </g>
+
+      <g font-size="13.5" fill="#1c1e24" transform="translate(16 130)">
+        <text x="0" y="0" font-weight="600">S-box</text><text x="120" y="0" font-size="12.5" fill="#4a4f5a">RC4-style KSA + GF(2⁸) x²⁵⁴ inverse</text>
+        <text x="0" y="26" font-weight="600">Subkey</text><text x="120" y="26" font-size="12.5" fill="#4a4f5a">SHA-256 IV words used only as ARX seeds</text>
+        <text x="0" y="52" font-weight="600">Warm-up</text><text x="120" y="52" font-size="12.5" fill="#4a4f5a">512 rounds, stirs state — ciphertext untouched</text>
+      </g>
+      <path d="M22 168 C 200 164, 320 172, 456 166" fill="none" stroke="#e2e4ea" stroke-width="1.3"></path>
+
+      <g transform="translate(16 210)">
+        <rect width="440" height="60" rx="6" fill="#fdf0f0" stroke="#9b2c2c" stroke-width="1.6" stroke-dasharray="6 4"></rect>
+        <text x="14" y="21" font-size="13" font-weight="600" fill="#9b2c2c">The trap: pass 1 XORs, pass 2 ADDS</text>
+        <text x="14" y="41" font-size="12" fill="#9b2c2c">assume XOR throughout and the PE never parses</text>
+      </g>
+
+      <g transform="translate(16 284)">
+        <rect width="440" height="52" rx="6" fill="#eef7f2" stroke="#1f6b46" stroke-width="1.5"></rect>
+        <text x="14" y="22" font-size="13" font-weight="600" fill="#1f6b46">Two functions decompiled unreliably</text>
+        <text x="14" y="40" font-size="12" fill="#4a4f5a">so the cipher runs under Unicorn instead of being ported</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- zone 4: run -->
+  <g transform="translate(56 592)">
+    <text font-family="'JetBrains Mono',ui-monospace,monospace" font-size="12.5" letter-spacing="2" fill="#767d8a">4 · RUN — MANUAL MAP, THEN RELEASE</text>
+
+    <g transform="translate(0 20) rotate(-0.3)">
+      <rect x="3" y="4" width="470" height="164" rx="8" fill="none" stroke="#b3b8c6" stroke-width="1.1" opacity=".45"></rect>
+      <rect width="470" height="164" rx="8" fill="#f5f6f9" stroke="#18225c" stroke-width="2.4"></rect>
+      <text x="20" y="30" font-family="'JetBrains Mono',ui-monospace,monospace" font-size="12" letter-spacing="1.8" fill="#18225c">THE HEADLINE · manual_map_pe_and_run</text>
+      <text x="20" y="58" font-family="'Source Serif 4',Georgia,serif" font-size="22" font-weight="600" fill="#1c1e24">A whole Windows loader,</text>
+      <text x="20" y="86" font-family="'Source Serif 4',Georgia,serif" font-size="22" font-weight="600" fill="#1c1e24">reimplemented inside itself</text>
+      <g transform="translate(20 102)">
+        <rect width="430" height="48" rx="6" fill="#eef7f2" stroke="#1f6b46" stroke-width="1.5"></rect>
+        <text x="14" y="20" font-size="13.5" font-weight="600" fill="#1f6b46">Sections · relocations · imports · TLS · entry call</text>
+        <text x="14" y="38" font-size="13" fill="#4a4f5a">no LdrLoadDll, nothing ever touches disk</text>
+      </g>
+    </g>
+
+    <g transform="translate(500 20)" font-size="13.5">
+      <g transform="translate(0 0) rotate(0.5)"><rect width="212" height="46" rx="6" fill="#fff" stroke="#1c1e24" stroke-width="1.5"></rect><text x="14" y="20" font-weight="600" fill="#1c1e24">Payload</text><text x="14" y="37" font-size="12" fill="#4a4f5a">Vidar stealer, 1,157,120 B</text></g>
+      <g transform="translate(228 0) rotate(-0.4)"><rect width="212" height="46" rx="6" fill="#fdf0f0" stroke="#9b2c2c" stroke-width="1.5" stroke-dasharray="6 4"></rect><text x="14" y="20" font-weight="600" fill="#9b2c2c">No C2 in this file</text><text x="14" y="37" font-size="12" fill="#9b2c2c">no socket, HTTP or DNS API resolved</text></g>
+      <g transform="translate(456 0) rotate(0.3)"><rect width="212" height="46" rx="6" fill="#fdf0f0" stroke="#9b2c2c" stroke-width="1.5" stroke-dasharray="6 4"></rect><text x="14" y="20" font-weight="600" fill="#9b2c2c">No persistence</text><text x="14" y="37" font-size="12" fill="#9b2c2c">no registry, service or task API</text></g>
+      <g transform="translate(0 58) rotate(-0.3)"><rect width="212" height="46" rx="6" fill="#fff" stroke="#1c1e24" stroke-width="1.5"></rect><text x="14" y="20" font-weight="600" fill="#1c1e24">Decoy exports</text><text x="14" y="37" font-size="12" fill="#4a4f5a">1,055 names, ~30 real addresses</text></g>
+      <g transform="translate(228 58) rotate(0.4)"><rect width="212" height="46" rx="6" fill="#fff" stroke="#1c1e24" stroke-width="1.5"></rect><text x="14" y="20" font-weight="600" fill="#1c1e24">Junk-call dispatcher</text><text x="14" y="37" font-size="12" fill="#4a4f5a">13 random calls per run — ignore</text></g>
+      <g transform="translate(456 58) rotate(-0.5)"><rect width="212" height="46" rx="6" fill="#fdf6e6" stroke="#d8b96a" stroke-width="1.5" stroke-dasharray="6 4"></rect><text x="14" y="20" font-weight="600" fill="#8a5a00">LOAD_CONFIG helper</text><text x="14" y="37" font-size="12" fill="#8a5a00">4 of its API hashes still unresolved</text></g>
+    </g>
+  </g>
+
+  <text x="56" y="800" font-family="'JetBrains Mono',ui-monospace,monospace" font-size="12" letter-spacing="1.4" fill="#767d8a">SOLID = PROVEN OR EXECUTED · DASHED = INFERRED OR UNRESOLVED · SOMESOTA</text>
+</svg>

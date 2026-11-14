@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 760" width="960" height="760"
+     role="img" aria-label="The NetZipper drop chain, twelve steps from the native entry stub to launching the extracted file"
+     font-family="Inter, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="s" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#3a4590"/>
+    </marker>
+    <style>
+      .ttl  { font-size: 12.5px; font-weight: 600; fill: #18225c; }
+      .fn   { font-size: 11.5px; font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fill: #767d8a; }
+      .det  { font-size: 11.5px; fill: #1c1e24; }
+      .num  { font-size: 11px; font-weight: 600; fill: #ffffff; }
+      .hdr  { font-size: 12px; font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; fill: #18225c; letter-spacing: 1.2px; }
+      .bar  { fill: #ffffff; stroke: #d8dbe4; stroke-width: 1.5; }
+      .lbl  { font-size: 12.5px; fill: #1c1e24; }
+    </style>
+  </defs>
+
+  <rect width="960" height="760" fill="#ffffff"/>
+
+  <rect x="0" y="14" width="960" height="26" fill="#eef0f7"/>
+  <text x="16" y="32" class="hdr">NETZIPPER — TWELVE STEPS, NO CIPHER ANYWHERE IN THE PATH</text>
+
+  <line x1="44" y1="66" x2="44" y2="700" stroke="#d8dbe4" stroke-width="2"/>
+
+  <!-- 1 -->
+  <rect x="20" y="56" width="920" height="46" rx="3" class="bar"/>
+  <circle cx="44" cy="79" r="12" fill="#18225c"/><text x="44" y="83" text-anchor="middle" class="num">1</text>
+  <text x="66" y="75" class="ttl">Execute the file</text>
+  <text x="66" y="92" class="fn">native _CorExeMain bootstrap</text>
+  <text x="470" y="84" class="det">AddressOfEntryPoint 0x1cbb5e — only the runtime stub, nothing to read</text>
+
+  <!-- 2 -->
+  <rect x="20" y="110" width="920" height="46" rx="3" class="bar"/>
+  <circle cx="44" cy="133" r="12" fill="#18225c"/><text x="44" y="137" text-anchor="middle" class="num">2</text>
+  <text x="66" y="129" class="ttl">Decoy entry point runs and returns</text>
+  <text x="66" y="146" class="fn">StateofDecay.Program::Main</text>
+  <text x="470" y="138" class="det">RVA 0x72f4, token 0x60000fb — geometry, two puzzle solvers, self-tests</text>
+
+  <!-- 3 -->
+  <rect x="20" y="164" width="920" height="46" rx="3" class="bar"/>
+  <circle cx="44" cy="187" r="12" fill="#18225c"/><text x="44" y="191" text-anchor="middle" class="num">3</text>
+  <text x="66" y="183" class="ttl">An oversized numeric literal overflows long</text>
+  <text x="66" y="200" class="fn">StateofDecay.BigFloat::Parse</text>
+  <text x="470" y="192" class="det">escalates to the big-integer path only on OverflowException</text>
+
+  <!-- 4 -->
+  <rect x="20" y="218" width="920" height="46" rx="3" class="bar"/>
+  <circle cx="44" cy="241" r="12" fill="#18225c"/><text x="44" y="245" text-anchor="middle" class="num">4</text>
+  <text x="66" y="237" class="ttl">The counter crosses 6 and a deliberate read throws</text>
+  <text x="66" y="254" class="fn">BigFloat::ParseWithBigInt · FractionDepth::_parseDepth</text>
+  <text x="470" y="246" class="det">the catch block is the payload · CIL body 1,035 B</text>
+
+  <!-- 5 — the guard -->
+  <rect x="20" y="272" width="920" height="46" rx="3" fill="#eef0f7" stroke="#18225c" stroke-width="2"/>
+  <circle cx="44" cy="295" r="12" fill="#18225c"/><text x="44" y="299" text-anchor="middle" class="num">5</text>
+  <text x="66" y="291" class="ttl">Profile-path guard — the silent kill switch</text>
+  <text x="66" y="308" class="fn">CovertOperationModule::IsRunningFromCopy</text>
+  <text x="470" y="292" class="det">%APPDATA% · %LOCALAPPDATA% · %ProgramData% · %TEMP%</text>
+  <text x="470" y="309" class="det">a match aborts everything below — no error, no traffic</text>
+
+  <!-- 6 -->
+  <rect x="20" y="326" width="920" height="46" rx="3" class="bar"/>
+  <circle cx="44" cy="349" r="12" fill="#18225c"/><text x="44" y="353" text-anchor="middle" class="num">6</text>
+  <text x="66" y="345" class="ttl">Pick the embedded ZIP resource</text>
+  <text x="66" y="362" class="fn">CovertOperationModule::LocateEmbeddedComponent</text>
+  <text x="470" y="354" class="det">LX_S0C00pWGHy5bmOt.zip · 453,375 B · first after filter and sort</text>
+
+  <!-- 7 -->
+  <rect x="20" y="380" width="920" height="46" rx="3" class="bar"/>
+  <circle cx="44" cy="403" r="12" fill="#18225c"/><text x="44" y="407" text-anchor="middle" class="num">7</text>
+  <text x="66" y="399" class="ttl">Create a GUID-named staging directory</text>
+  <text x="66" y="416" class="fn">CovertOperationModule::EstablishTemporaryPerimeter</text>
+  <text x="470" y="408" class="det">Guid.NewGuid("N") under %TEMP%</text>
+
+  <!-- 8 -->
+  <rect x="20" y="434" width="920" height="46" rx="3" class="bar"/>
+  <circle cx="44" cy="457" r="12" fill="#18225c"/><text x="44" y="461" text-anchor="middle" class="num">8</text>
+  <text x="66" y="453" class="ttl">Write the archive out</text>
+  <text x="66" y="470" class="fn">CovertOperationModule::TransferAssetToPerimeter</text>
+  <text x="470" y="462" class="det">the resource stream is copied to payload_package.dat</text>
+
+  <!-- 9 -->
+  <rect x="20" y="488" width="920" height="46" rx="3" class="bar"/>
+  <circle cx="44" cy="511" r="12" fill="#18225c"/><text x="44" y="515" text-anchor="middle" class="num">9</text>
+  <text x="66" y="507" class="ttl">Extract the member</text>
+  <text x="66" y="524" class="fn">CovertOperationModule::UnpackContainerContents</text>
+  <text x="470" y="516" class="det">ZipFile.ExtractToDirectory → 22.exe, 64acf136…7632</text>
+
+  <!-- 10 -->
+  <rect x="20" y="542" width="920" height="46" rx="3" class="bar"/>
+  <circle cx="44" cy="565" r="12" fill="#18225c"/><text x="44" y="569" text-anchor="middle" class="num">10</text>
+  <text x="66" y="561" class="ttl">Delete the staged archive</text>
+  <text x="66" y="578" class="fn">CovertOperationModule::RemoveTemporaryAsset</text>
+  <text x="470" y="570" class="det">payload_package.dat is removed, the extracted file stays</text>
+
+  <!-- 11 -->
+  <rect x="20" y="596" width="920" height="46" rx="3" class="bar"/>
+  <circle cx="44" cy="619" r="12" fill="#18225c"/><text x="44" y="623" text-anchor="middle" class="num">11</text>
+  <text x="66" y="615" class="ttl">Filter on a twelve-extension whitelist</text>
+  <text x="66" y="632" class="fn">CovertOperationModule::ActivatePerimeterComponents</text>
+  <text x="470" y="624" class="det">.exe .bat .js .vbs .pdf .doc .docx .png .jpg .jpeg .mp4 .txt</text>
+
+  <!-- 12 -->
+  <rect x="20" y="650" width="920" height="46" rx="3" fill="#eef7f2" stroke="#1f6b46" stroke-width="1.5"/>
+  <circle cx="44" cy="673" r="12" fill="#1f6b46"/><text x="44" y="677" text-anchor="middle" class="num">12</text>
+  <text x="66" y="669" class="ttl">Launch what survived the filter</text>
+  <text x="66" y="686" class="fn">CovertOperationModule::InitiateComponentExecution</text>
+  <text x="470" y="678" class="det">.exe → Process.Start · anything else → cmd.exe /c start "" "path"</text>
+
+  <line x1="44" y1="700" x2="44" y2="714" stroke="#3a4590" stroke-width="2" marker-end="url(#s)"/>
+
+  <rect x="20" y="724" width="920" height="30" rx="3" fill="#f5f6f9" stroke="#d8dbe4" stroke-width="1.5"/>
+  <text x="480" y="744" text-anchor="middle" class="lbl">Steps 5 to 12 are enumerated by the iterator InitiatePayloadSequence — they run as a side effect of enumeration.</text>
+</svg>

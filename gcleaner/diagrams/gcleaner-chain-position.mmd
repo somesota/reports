@@ -1,0 +1,12 @@
+flowchart TD
+    P["CryptOne-packed Delphi loader<br/>parent · abused code-signing certificate"]
+    L["GCleaner loader — build mixthree"]
+    S["GCleaner loader — build mixsix<br/>never reverse-engineered"]
+    C["/update ciphertext capture"]
+    U["Update payload DLL<br/>sole export updateSW"]
+    F["Final pay-per-install artifacts<br/>never captured"]
+    P -.->|unpacks to — recorded relation + unpacking tag| L
+    L -->|GET /update| C
+    S -.->|shared ciphertext parent| C
+    C -->|proven decrypt — parameters withheld| U
+    U -.->|fetched from /service, dropped, executed| F

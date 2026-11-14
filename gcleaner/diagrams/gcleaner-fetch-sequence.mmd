@@ -1,0 +1,14 @@
+sequenceDiagram
+    participant V as Victim host (loader)
+    participant D as Google Drive (HTTPS)
+    participant C as C2 host
+    V->>D: GET redirector URL
+    D-->>V: encrypted C2 hostname string
+    Note over V: decode via local substitution cipher
+    V-)C: GET /success (substr, sub, s) — recovered configuration, not traced in disassembly
+    V->>C: GET /info  (HTTP)
+    C-->>V: password bytes
+    V->>C: GET /update  (HTTP)
+    C-->>V: AES-encrypted PE
+    Note over V: derive AES key from password, decrypt PE (parameters withheld)
+    Note over V: validate/map PE in-process, call "updateSW" export
