@@ -1,10 +1,10 @@
-# LX_CRYPTER
+# FishCrypter and NetZipPacker
 
-> A 1.87 MB .NET crypter delivered by GCleaner. Its hidden branch does two unrelated things: it decrypts an Amadey v5.78 backdoor in memory with a bespoke Curve25519-into-Threefish cipher, and it unzips a second LX_CRYPTER build to disk, which in turn delivers Remus-A. We rebuilt both paths offline and reproduced both payload hashes.
+> A 1.87 MB .NET crypter delivered by GCleaner. Its hidden branch does two unrelated things: it decrypts an Amadey v5.78 backdoor in memory with a bespoke Curve25519-into-Threefish cipher, and it unzips a second FishCrypter build to disk, which in turn delivers Remus-A. We rebuilt both paths offline and reproduced both payload hashes.
 
 > [!TIP]
 > **Key highlights**
-> - **A crypter with a dropper bolted on.** CurveFish decrypts Amadey in memory. NetZipper only unzips a second CurveFish build, which delivers Remus-A. Neither path feeds the other.
+> - **A crypter with a dropper bolted on.** FishCrypter decrypts Amadey in memory. NetZipPacker only unzips a second FishCrypter build, which delivers Remus-A. Neither path feeds the other.
 > - **Payload hidden behind an exception.** The entry point solves Advent-of-Code puzzles and returns. The payload sits in a `catch` block reached by a deliberate out-of-bounds read.
 > - **Silent sandbox guard.** The drop aborts with no error and no traffic when the file runs from `%APPDATA%`, `%LOCALAPPDATA%`, `%ProgramData%` or `%TEMP%`.
 > - **Cipher proven by reimplementation.** Our Python port reproduces the Amadey payload exactly. The password sits in plaintext in the outer EXE.
@@ -22,8 +22,8 @@
 | File type | PE32 GUI, i386, pure IL (CLR flags `0x3`), 3 sections, 1,877,504 bytes, no overlay |
 | Build time | Debug timestamp `0x6A89D833` → 2026-08-22 UTC. The PE `TimeDateStamp` (2048-11-24) is forced |
 | Packer | It is itself the crypter. The ciphertext is a Base91 string, so `.text` entropy stays at 5.92 |
-| Payload SHA-256 (CurveFish) | `dce69e096e6b7a54db14431f5208870070503e1961e3f9912c6bbc42fd43ac55` (Amadey v5.78, in memory) |
-| Dropped file SHA-256 (NetZipper) | `64acf136e30d15f4ff8fe0eee978d30c249d28ca7578cf60d138aa79cb4e7632` (`22.exe`, Win64 CurveFish build) |
+| Payload SHA-256 (FishCrypter) | `dce69e096e6b7a54db14431f5208870070503e1961e3f9912c6bbc42fd43ac55` (Amadey v5.78, in memory) |
+| Dropped file SHA-256 (NetZipPacker) | `64acf136e30d15f4ff8fe0eee978d30c249d28ca7578cf60d138aa79cb4e7632` (`22.exe`, Win64 FishCrypter build) |
 | Final payload of `22.exe` | `a0889124e151d08725f6ffe9b84b274cf157cc52ca305f9b66aa228ddb30ba7e` (Remus-A) |
 | Signature | — |
 | Delivery vehicle | Child of a GCleaner update payload (`updateSW` export) in our sample repository |
@@ -31,9 +31,9 @@
 
 ## What does the file do ? 
 
-![One file, two independent paths that share only their trigger](diagrams/lx-crypter.svg)
+![One file, two independent paths that share only their trigger](diagrams/fishcrypter-netzippacker-chain.svg)
 
-*The decoy entry point returns. One oversized literal in its self-tests overflows into the hidden branch, which holds both paths. NetZipper writes `22.exe`, a second CurveFish build, to disk; CurveFish decrypts Amadey in memory. Both output hashes were reproduced offline. The dashed box is the next hop, Remus-A, identified in a separate analysis and not reproduced here.*
+*The decoy entry point returns. One oversized literal in its self-tests overflows into the hidden branch, which holds both paths. NetZipPacker writes `22.exe`, a second FishCrypter build, to disk; FishCrypter decrypts Amadey in memory. Both output hashes were reproduced offline. The dashed box is the next hop, Remus-A, identified in a separate analysis and not reproduced here.*
 
 
 ## Module: StateofDecay
@@ -70,9 +70,9 @@ The method is named like an anti-re-execution check, but it works as sandbox eva
 **Obfuscation techniques.** A second Base91 string (`#US` offset `345`, 75,029 characters) sits next to the real ciphertext — an extractor that takes the first match gets the wrong string. `InvokeViaILVoid` builds a `DynamicMethod` named `DynamicCallerV` that calls `Assembly.Load(bytes).GetType(name).GetMethod("Run").Invoke(...)`: that chain exists only at JIT time, so a static search for `GetMethod("Run")` finds nothing.
 
 
-## Module: CurveFish
+## Module: FishCrypter
 
-CurveFish is the in-memory decryption module. It takes a ciphertext from the `#US` heap and a password from the same binary, loads a helper assembly, and returns a live Amadey v5.78 PE without touching disk.
+FishCrypter is the in-memory decryption module. It takes a ciphertext from the `#US` heap and a password from the same binary, loads a helper assembly, and returns a live Amadey v5.78 PE without touching disk.
 
 ### Cipher chain
 
@@ -92,7 +92,7 @@ Base91 decode
 
 The self-DH step is the signature of this cipher. Deriving a shared secret from your own key pair adds no security, and it is unusual enough to cluster on. Every literal in the chain changes per build; the construction does not.
 
-![The CurveFish cipher chain](diagrams/curvefish-cipher-chain.svg)
+![The FishCrypter cipher chain](diagrams/fishcrypter-cipher-chain.svg)
 
 *Steps 1 to 9 were reimplemented in Python and reproduce the payload hash from this file. Step 10 writes the marker file. Step 11 is dashed: the hollowing call site exists but was never shown reached.*
 
@@ -139,11 +139,11 @@ Neither technique changes what the cipher does. Strip CryptoObfuscator and both 
 >
 > CryptoObfuscator's auto-generated helper classes follow a `<Purpose>_<ProtectedNamespace><Suffix>` naming template, so the namespace it is protecting (`IBar2Double`) gets pasted straight into the names it invents. Two of its generated classes were confirmed by decompile: `ConstTable_IBar2DoublePercent.GetInt32Const_DesDeflateObfuscatedConstant` (the integer-constant accessor, called ~130 times across `ADXPlot`/`Base91`/`Threefish256`) and `ResourceObfuscator_DesDeflateDecoder` (decodes the embedded `IBar2Double&&` resource that feeds it). `IBar2Double` itself is not a CryptoObfuscator function — it's the malware author's own namespace name, which CryptoObfuscator happened to fold into its own generated identifiers.
 
-## Module: NetZipper
+## Module: NetZipPacker
 
-NetZipper is the .NET ZIP dropper. There is no cipher and no custom compression: it copies a ZIP resource to disk, calls `ZipFile.ExtractToDirectory`, and launches the result. It runs as the second path out of the StateofDecay trigger — after the sandbox guard passes — via the iterator `CovertOperationModule::InitiatePayloadSequence`.
+NetZipPacker is the .NET ZIP dropper. There is no cipher and no custom compression: it copies a ZIP resource to disk, calls `ZipFile.ExtractToDirectory`, and launches the result. It runs as the second path out of the StateofDecay trigger — after the sandbox guard passes — via the iterator `CovertOperationModule::InitiatePayloadSequence`.
 
-![The NetZipper drop chain, twelve steps](diagrams/netzipper-drop-chain.svg)
+![The NetZipPacker drop chain, twelve steps](diagrams/netzippacker-drop-chain.svg)
 
 *Steps 1 to 7 run as a side effect of enumerating the iterator `InitiatePayloadSequence`. Our extractor reproduced steps 1 and 4 and recovered `22.exe` at its recorded hash.*
 
@@ -163,7 +163,7 @@ The whitelist mixes executable types (`.exe .bat .js .vbs`) with document and me
 
 ### Dropped payload: 22.exe
 
-`22.exe` is a Win64 CurveFish build from the same builder, under a different build token (`LX_KK050mhlf5`) and its own per-build password. It carries the identical `StateofDecay` class and method template — the same `BigFloat::ParseWithBigInt` trigger. It decrypts its own ciphertext with the same CurveFish algorithm and delivers Remus-A (`a0889124…ba7e`) [[2]](#ref-2). 
+`22.exe` is a Win64 FishCrypter build from the same builder, under a different build token (`LX_KK050mhlf5`) and its own per-build password. It carries the identical `StateofDecay` class and method template — the same `BigFloat::ParseWithBigInt` trigger. It decrypts its own ciphertext with the same FishCrypter algorithm and delivers Remus-A (`a0889124…ba7e`) [[2]](#ref-2). 
 
 ## MITRE ATT&CK
 
@@ -171,7 +171,7 @@ The whitelist mixes executable types (`.exe .bat .js .vbs`) with document and me
 |---|---|---|
 | Obfuscated Files or Information | T1027 | Merged decoy library, puzzle-code padding, themed method names, exception-as-branch trigger |
 | Obfuscated Files or Information: Dynamic API Resolution | T1027.007 | `DynamicMethod` emitted at runtime for the reflective load-and-invoke |
-| Deobfuscate/Decode Files or Information | T1140 | The CurveFish chain, reproduced offline to the exact payload hash |
+| Deobfuscate/Decode Files or Information | T1140 | The FishCrypter chain, reproduced offline to the exact payload hash |
 | Virtualization/Sandbox Evasion: System Checks | T1497.001 | `IsRunningFromCopy` aborts silently from a profile or temp folder |
 | Ingress Tool Transfer | T1105 | Embedded ZIP member written to a `%TEMP%` subfolder and executed |
 | Data Staged: Local Data Staging | T1074.001 | `payload_package.dat` staged then deleted; `stub_exe.dat` written to two folders |
@@ -213,7 +213,7 @@ Read it with `strings -el <sample>` and look at the string at that offset. Use `
 | static field | `FractionDepth::_parseDepth` | Call counter gating the trigger, reset to `-1` after firing |
 | — | `CovertOperationModule::IsRunningFromCopy` | Folder guard: `CSIDL` `0x1a` / `0x1c` / `0x23` plus `GetTempPath` |
 | — | `CovertOperationModule::InitiatePayloadSequence` | Iterator running drop steps 5 to 12 |
-| `#US` offset `150953` | CurveFish ciphertext | 518,915 Base91 characters |
+| `#US` offset `150953` | FishCrypter ciphertext | 518,915 Base91 characters |
 | `#US` offset `345` | decoy ciphertext | 75,029 characters, not the payload |
 | in `LfdReader.dll` | `IBar2Double.ADXPlot::Benchmark` | Cipher entry, `(ciphertext, password) → byte[]` |
 | resource `IBar2Double%` | `ConstTable_IBar2DoublePercent` | Every integer constant of the cipher |
@@ -244,7 +244,7 @@ Both EXEs come from the same builder template. Everything per-build is procedura
 |---|---|---|
 | SHA-256 | `20082d2052d2d406bb4193990d933dc9b78bf2ccc3f2618144ada1fb7e0a995e` | `64acf136e30d15f4ff8fe0eee978d30c249d28ca7578cf60d138aa79cb4e7632` |
 | Build token | `LX_S0C00pWGHy5bmOt` | `LX_KK050mhlf5` |
-| ZIP container resource | `LX_S0C00pWGHy5bmOt.zip`, 453,375 B (dropped by this build's NetZipper) | — (`22.exe` is the dropped payload, not a container) |
+| ZIP container resource | `LX_S0C00pWGHy5bmOt.zip`, 453,375 B (dropped by this build's NetZipPacker) | — (`22.exe` is the dropped payload, not a container) |
 | Threefish password | Per-build, plaintext UTF-16LE | Per-build, plaintext UTF-16LE |
 | Debug build timestamp | `0x6A89D833` = 2026-08-22 17:11:15 UTC | `0x6A89D7DF` = 2026-08-22 17:09:51 UTC (84 seconds earlier) |
 | CompanyName | `Farmersville` | `touched in the wind` |
@@ -268,7 +268,7 @@ Both EXEs come from the same builder template. Everything per-build is procedura
 | `24576:XF8/OcAblxAAkKGR/xgDTC6JKKWOtY9/6dGXRsXsvVf:q/Oc6lxALKM/uS0/gJXqXs9` | ssdeep | Same builder, same padding mix |
 | `T1F1952F603BEA61D9F077BE26C7EA7692D62FB3737A07965B1600030F0622542DF53939` | TLSH | Same builder output shape |
 | `dce69e096e6b7a54db14431f5208870070503e1961e3f9912c6bbc42fd43ac55` | SHA-256 | Amadey v5.78 payload, 421,888 B, MD5 `ee2238ee066404885532728f74e8131e`. Exists only in memory |
-| `64acf136e30d15f4ff8fe0eee978d30c249d28ca7578cf60d138aa79cb4e7632` | SHA-256 | `22.exe`, dropped by NetZipper. Win64 CurveFish build, token `LX_KK050mhlf5` |
+| `64acf136e30d15f4ff8fe0eee978d30c249d28ca7578cf60d138aa79cb4e7632` | SHA-256 | `22.exe`, dropped by NetZipPacker. Win64 FishCrypter build, token `LX_KK050mhlf5` |
 | `a0889124e151d08725f6ffe9b84b274cf157cc52ca305f9b66aa228ddb30ba7e` | SHA-256 | Remus-A, decrypted by `22.exe`. Not reproduced here |
 | `2f11f4c64635677b83d5452a1ab385c0bd24feca1b678d1c2ed26297325dc849` | SHA-256 | Helper `LfdReader.dll` (`IBar2Double` 1.0.0.0). Identical in the sibling build |
 | Threefish password (value withheld) | Threefish password | Per-build, plaintext UTF-16LE at `0xc3c21` in the main sample. The sibling has its own |

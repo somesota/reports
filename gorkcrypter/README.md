@@ -1,4 +1,4 @@
-# GoWordCount Packer
+# GorkCrypter Packer
 
 > A garble-obfuscated Go packer dropped by GCleaner's update payload. It decodes an embedded x64 PE through a six-pass keyed byte transform hidden inside genuinely-executing decoy code.
 
@@ -34,7 +34,7 @@
 
 The diagram below traces execution from arrival to payload hand-off.
 
-![GoWordCount Packer — Execution Sequence](diagrams/gowordcount-exec-flow.svg)
+![GorkCrypter Packer — Execution Sequence](diagrams/gorkcrypter-exec-flow.svg)
 
 
 ## Anti-analysis
@@ -123,7 +123,7 @@ PE32+ GUI image, 285,184 bytes, entry point `0x20a0`, image base `0x140000000`, 
 
 ## Build comparison
 
-The two builds run the same six-pass decoder and differ in key, blob, size, toolchain, signer and payload. Values marked † were filled by a reverse pass on 2026-11-12 (PE parsing, `openssl`, byte search and disassembly of both samples, plus a re-run of `unpackers/gowordcount_unpacker`).
+The two builds run the same six-pass decoder and differ in key, blob, size, toolchain, signer and payload. Values marked † were filled by a reverse pass on 2026-11-12 (PE parsing, `openssl`, byte search and disassembly of both samples, plus a re-run of `unpackers/gorkcrypter_unpacker`).
 
 | | First build (1B) | Second build (2B) | Same? |
 |---|---|---|---|

@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 700" width="960" height="700"
-     role="img" aria-label="The arxstream cipher pipeline: three key-schedule stages, a warm-up, and two passes over the ciphertext"
+     role="img" aria-label="The arxcrypter cipher pipeline: three key-schedule stages, a warm-up, and two passes over the ciphertext"
      font-family="Inter, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
   <defs>
     <marker id="s" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">

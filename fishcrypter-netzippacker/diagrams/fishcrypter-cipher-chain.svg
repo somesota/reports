@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 604" width="960" height="604"
-     role="img" aria-label="The CurveFish cipher chain from an in-file string literal to an Amadey PE decrypted in memory"
+     role="img" aria-label="The FishCrypter cipher chain from an in-file string literal to an Amadey PE decrypted in memory"
      font-family="Inter, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" xmlns:c2pa="http://c2pa.org/manifest">
   <defs>
     <marker id="s" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
@@ -25,7 +25,7 @@
   <rect width="960" height="604" fill="#ffffff"/>
 
   <rect x="0" y="14" width="960" height="26" fill="#eef0f7"/>
-  <text x="16" y="32" class="hdr">CURVEFISH — A STRING LITERAL IN THIS FILE TO AN AMADEY PE, ENTIRELY IN MEMORY</text>
+  <text x="16" y="32" class="hdr">FISHCRYPTER — A STRING LITERAL IN THIS FILE TO AN AMADEY PE, ENTIRELY IN MEMORY</text>
 
   <!-- row A: steps 1-3 -->
   <rect x="20" y="56" width="290" height="80" rx="3" class="box"/>

@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 760" width="960" height="760"
-     role="img" aria-label="The NetZipper drop chain, twelve steps from the native entry stub to launching the extracted file"
+     role="img" aria-label="The NetZipPacker drop chain, twelve steps from the native entry stub to launching the extracted file"
      font-family="Inter, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
   <defs>
     <marker id="s" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
@@ -19,7 +19,7 @@
   <rect width="960" height="760" fill="#ffffff"/>
 
   <rect x="0" y="14" width="960" height="26" fill="#eef0f7"/>
-  <text x="16" y="32" class="hdr">NETZIPPER — TWELVE STEPS, NO CIPHER ANYWHERE IN THE PATH</text>
+  <text x="16" y="32" class="hdr">NETZIPPACKER — TWELVE STEPS, NO CIPHER ANYWHERE IN THE PATH</text>
 
   <line x1="44" y1="66" x2="44" y2="700" stroke="#d8dbe4" stroke-width="2"/>
 

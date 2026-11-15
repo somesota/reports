@@ -9,13 +9,13 @@
   </defs>
   <rect width="720" height="660" fill="#ffffff" rx="4"/>
   <!-- Title -->
-  <text x="360" y="30" text-anchor="middle" font-size="16" font-weight="600" fill="#0f172a">GoWordCount Packer — Execution Sequence</text>
+  <text x="360" y="30" text-anchor="middle" font-size="16" font-weight="600" fill="#0f172a">GorkCrypter Packer — Execution Sequence</text>
   <text x="360" y="48" text-anchor="middle" font-size="11" fill="#64748b">From GCleaner drop to in-memory payload hand-off</text>
   <!-- Participant boxes -->
   <rect x="30" y="65" width="130" height="32" rx="4" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
   <text x="95" y="85" text-anchor="middle" font-size="11" font-weight="600" fill="#1e40af">GCleaner Update</text>
   <rect x="220" y="65" width="130" height="32" rx="4" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
-  <text x="285" y="85" text-anchor="middle" font-size="11" font-weight="600" fill="#3730a3">GoWordCount</text>
+  <text x="285" y="85" text-anchor="middle" font-size="11" font-weight="600" fill="#3730a3">GorkCrypter</text>
   <rect x="410" y="65" width="130" height="32" rx="4" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
   <text x="475" y="85" text-anchor="middle" font-size="11" font-weight="600" fill="#475569">LazyDLL/LazyProc</text>
   <rect x="570" y="65" width="100" height="32" rx="4" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>

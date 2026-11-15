@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 662" width="960" height="662"
-     role="img" aria-label="One file, two independent paths: NetZipper drops a CurveFish-packed 22.exe that delivers Remus-A; CurveFish decrypts Amadey v5.78 in memory"
+     role="img" aria-label="One file, two independent paths: NetZipPacker drops a FishCrypter-packed 22.exe that delivers Remus-A; FishCrypter decrypts Amadey v5.78 in memory"
      font-family="Inter, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" xmlns:c2pa="http://c2pa.org/manifest">
   <defs>
     <marker id="s" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
@@ -52,12 +52,12 @@
 
   <!-- two peers -->
   <rect x="20" y="294" width="440" height="96" rx="3" class="box"/>
-  <text x="240" y="318" text-anchor="middle" class="ttl">NetZipper — extraction, no cipher</text>
+  <text x="240" y="318" text-anchor="middle" class="ttl">NetZipPacker — extraction, no cipher</text>
   <text x="240" y="338" text-anchor="middle" class="lbl">manifest ZIP resource → %TEMP% GUID dir → unzip → launch</text>
   <text x="240" y="358" text-anchor="middle" class="addr">LX_S0C00pWGHy5bmOt.zip · 453,375 B</text>
 
   <rect x="500" y="294" width="440" height="96" rx="3" class="box"/>
-  <text x="720" y="318" text-anchor="middle" class="ttl">CurveFish — cipher, no archive</text>
+  <text x="720" y="318" text-anchor="middle" class="ttl">FishCrypter — cipher, no archive</text>
   <text x="720" y="338" text-anchor="middle" class="lbl">#US string literal → Base91 → Threefish-256-CBC, in memory</text>
   <text x="720" y="358" text-anchor="middle" class="addr">#US offset 150953 · 518,915 chars</text>
   <text x="720" y="378" text-anchor="middle" class="lbl">the helper assembly LfdReader.dll does the decrypting</text>
@@ -68,9 +68,9 @@
   <!-- outputs -->
   <!-- outputs row -->
   <rect x="20" y="414" width="440" height="64" rx="3" class="ok"/>
-  <text x="240" y="435" text-anchor="middle" class="lbl">22.exe — Win64 CurveFish build, written to disk and started</text>
+  <text x="240" y="435" text-anchor="middle" class="lbl">22.exe — Win64 FishCrypter build, written to disk and started</text>
   <text x="240" y="453" text-anchor="middle" class="addr">64acf136…7632 · token LX_KK050mhlf5 · reproduced byte-for-byte</text>
-  <text x="240" y="468" text-anchor="middle" class="addr">packed with CurveFish (sibling build, same builder)</text>
+  <text x="240" y="468" text-anchor="middle" class="addr">packed with FishCrypter (sibling build, same builder)</text>
 
   <rect x="500" y="414" width="440" height="64" rx="3" class="ok"/>
   <text x="720" y="438" text-anchor="middle" class="lbl">Amadey v5.78 — decrypted in memory, 421,888 B</text>
@@ -82,7 +82,7 @@
   <rect x="20" y="500" width="440" height="56" rx="3" class="dim"/>
   <text x="240" y="521" text-anchor="middle" class="ttl">Same entry point, same builder</text>
   <text x="240" y="539" text-anchor="middle" class="fn">StateofDecay.BigFloat::ParseWithBigInt</text>
-  <text x="240" y="552" text-anchor="middle" class="addr">CurveFish layer decrypts Remus-A in memory · token LX_KK050mhlf5</text>
+  <text x="240" y="552" text-anchor="middle" class="addr">FishCrypter layer decrypts Remus-A in memory · token LX_KK050mhlf5</text>
 
   <!-- Remus-A, delivered by 22.exe -->
   <line x1="240" y1="558" x2="240" y2="576" stroke="#b7791f" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#s)"/>

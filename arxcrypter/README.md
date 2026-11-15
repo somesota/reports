@@ -1,4 +1,4 @@
-# ArxStream Crypter
+# ArxCrypter
 
 > A single-purpose native x64 crypter delivered by GCleaner that does three things: check the keyboard layout, check the clock, then decrypt a megabyte of `.data` and run it inside itself. We ran the sample's own compiled cipher function under emulation, and it gave up a Vidar payload byte for byte.
 
@@ -33,16 +33,16 @@
 
 ## Starting point: chain position
 
-We found ArxStream delivered by GCleaner's `mixthree` setup build. The GCleaner update DLL (`updateSW` export) fetches `/service` from the C2 and writes the response to `%APPDATA%` under a random filename. In this setup, one of those responses is `MIX7.file` — this crypter, carrying Vidar v3.0.
+We found ArxCrypter delivered by GCleaner's `mixthree` setup build. The GCleaner update DLL (`updateSW` export) fetches `/service` from the C2 and writes the response to `%APPDATA%` under a random filename. In this setup, one of those responses is `MIX7.file` — this crypter, carrying Vidar v3.0.
 
-The name "ArxStream" is a project working name based on the cipher's add-rotate-xor construction and its stream-cipher architecture. We haven't found any public reporting on this family.
+The name "ArxCrypter" is a project working name based on the crypter's add-rotate-xor stream cipher. We haven't found any public reporting on this family.
 
 
 ## What does this file do when it runs?
 
 Run the EXE and it does its whole job in one process, start to finish, with no child process, no file written and no module loaded from disk. Three things happen in order: a locale check, a timing check, then decrypt-and-run. Both checks abort quietly with a non-zero exit and no side effects, so a failed run looks like a program that did nothing.
 
-![Execution path from entry point to payload](diagrams/arxstream-execution-path.svg)
+![Execution path from entry point to payload](diagrams/arxcrypter-execution-path.svg)
 
 *Entry to payload, in one process. Resolve APIs without an import table, bail out on a CIS locale or a distorted clock, otherwise decrypt the embedded image into fresh memory, run it in this same process, then release the buffer. The dashed box is the one inferred element — the four hashed locale-string comparisons, whose plaintext was never recovered.*
 
@@ -104,7 +104,7 @@ Full resource contents are in `extracted_resources/`.
 
 It is a four-stage key schedule feeding a byte-at-a-time keystream, built from borrowed pieces: an RC4-style key-scheduling loop, the AES S-box's GF(2⁸) `x^254` inverse used as a whitening primitive, and SHA-256's eight IV words used only as arbitrary mixing seeds. It might look like RC4, AES and ChaCha since it is the most common ARX (Add-Rotate-Xor) cipher. The SHA-256 constants are present, but no SHA-256 compression ever runs — they appear as scattered `MOV` immediates rather than the contiguous table a real implementation would use.
 
-![The ArxStream cipher pipeline](diagrams/arxstream-cipher-pipeline.svg)
+![The ArxCrypter cipher pipeline](diagrams/arxcrypter-cipher-pipeline.svg)
 
 
 ### Why we emulated instead of porting
@@ -127,7 +127,7 @@ The 128-byte master key sits at `0x14007b000`. Its value is not published here: 
 
 The stub reimplements enough of the Windows loader to run an arbitrary PE inside itself, with no `LdrLoadDll` and nothing on disk. `manual_map_pe_and_run` at `0x140076710` validates DOS and NT headers, allocates the image, copies sections, applies 64-bit relocations, resolves the mapped image's imports, sets per-section protections, registers exception-table entries, runs TLS callbacks, then calls the entry point.
 
-![The in-process PE mapper, eight steps](diagrams/arxstream-manual-map.svg)
+![The in-process PE mapper, eight steps](diagrams/arxcrypter-manual-map.svg)
 
 *The stub reimplements enough of the Windows loader to run an arbitrary PE inside itself. Steps 1–6 and 8 are all one function at `0x140076710`. Step 7 is a separate helper at `0x1400764d0`, drawn dashed because four of its hash constants were never matched to a named API — its role is inferred from call shape.*
 
